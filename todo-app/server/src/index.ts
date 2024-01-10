@@ -1,4 +1,6 @@
 import express from 'express'
+import "./db"
+import Note, { NoteDocument } from './models/note'
 
 const app = express()
 
@@ -29,12 +31,25 @@ app.post(
         res.json({ message: 'Todo Created' })
     })
 
+interface IncomingNote {
+    title: string
+    description?: string
+}
+
 
 app.post(
     '/create',
-    (req, res) => {
-        // need data to create a new todo
-        console.log(req.body)
+    async (req, res) => {
+        // const newNote =  new Note<NoteDocument>({
+        //     title: (req.body as IncomingNote).title,
+        //     description: (req.body as IncomingNote).description}
+        //     )
+
+        // await newNote.save()
+
+        //STREAMLINED ALTERNATIVE
+        await Note.create<NoteDocument>(req.body as IncomingNote)
+
         res.json({ message: 'Listening to create' })
     })
 
